@@ -7,11 +7,16 @@ namespace Lib
     public static class Data
     {
 
-        public static float SpawnDistance = 10; //EnemySpawnDistance
+        public static Vector3[] MonsterSpawnOffset=new Vector3[]
+        {
+            new Vector3(8, -3.61f,0), // Center
+            new Vector3(8, -5f,0), // Center
+            new Vector3(8, -6,0), // Center
+        };
 
-        public static Vector2 TruckMoveVector = new Vector2(0.5f * Time.deltaTime, 0);
+        public static Vector2 TruckMoveVector = new Vector2(0.1f * Time.deltaTime, 0);
 
-        public static float EnemySpeed = 5;
+        public static float EnemySpeed = 1;
 
 
         public static float CameraSpeed = 0.5f; // Speed of the camera movement
@@ -20,5 +25,11 @@ namespace Lib
 
         public static WaitForSeconds MonsterSpawnTime = Yielders.WaitForSeconds(1f); // Time between monster spawns 
 
+        public static string[] LayerName = new string[]
+        {
+            "EnemyLayer_1",
+            "EnemyLayer_2",
+            "EnemyLayer_3"
+        };
     }
 }
