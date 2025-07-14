@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Lib;
 
-public class FollowCamera : MonoBehaviour
+    public class FollowCamera : MonoBehaviour
 {
     [SerializeField] private Transform target;// The target to follow
     
@@ -22,6 +23,4 @@ public class FollowCamera : MonoBehaviour
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, Data.CameraSpeed);
         transform.position = smoothedPosition;
     }
-
-
 }
