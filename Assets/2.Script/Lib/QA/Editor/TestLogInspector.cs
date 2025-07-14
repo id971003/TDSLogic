@@ -37,32 +37,12 @@ namespace Lib
             {
                 case 0:
                     GUILayout.Label("---------- General ----------", style);
-                    GUILayout.Label("---------- Resources----------", style);
-                    SerializedProperty GoldValue = serializedObject.FindProperty("GoldValue");
-                    testLog.GoldValue = EditorGUILayout.IntField("GoldValue", GoldValue.intValue);
-                    if (GUILayout.Button("AddGold"))
-                    {
-                        //gold+=testlog.GoldValue;
 
-                    }
-                    SerializedProperty DiaValue = serializedObject.FindProperty("DiaValue");
-                    testLog.DiaValue = EditorGUILayout.IntField("DiaValue", DiaValue.intValue);
-                    if (GUILayout.Button("AddDia"))
-                    {
-                        //dia+=testlog.DiaValue;
-                    }
                     GUILayout.Label("---------- Enemy----------", style);
-                    if (GUILayout.Button("AllDie"))
+                    if (GUILayout.Button("SpawnMonster"))
                     {
-                        //dia+=testlog.DiaValue;
+                        GameManager.Instance.SpawnMolnster();
                     }
-                    GUILayout.Label("---------- Stage----------", style);
-                    if (GUILayout.Button("StageClear"))
-                    {
-                        //dia+=testlog.DiaValue;
-                    }
-                    EditorGUILayout.Space();
-
 
                     break;
                 case 1:
