@@ -18,18 +18,26 @@ public class Monster : Poolable
     Coroutine rootMove;
     Coroutine rootJump;
 
+
+    private float MoveSpeed;
+    private float MaxHp;
+    private float Hp;
+
     bool canJump;
 
     public void SetUp(int Layer)
     {
         canJump = true;
         layer = Layer;
-        collider2D.radius = Random.Range(0.3f, 0.5f); // 랜덤하게 collider 크기 설정
+        collider2D.radius = 0.4f;
         gameObject.layer = LayerMask.NameToLayer(Data.LayerName[Layer]);
         SetSortingLayerRecursively(view,Data.LayerName[Layer]);
         if (rootMove != null)
             StopCoroutine(rootMove);
         rootMove = StartCoroutine(MoveRoot());
+
+
+        MoveSpeed= Random.Range(Data.EnemySpeed_Min, Data.EnemySpeed_Max);
     }
 
     public void SetSortingLayerRecursively(GameObject root, string sortingLayerName)
@@ -47,7 +55,7 @@ public class Monster : Poolable
     {
         while (true)
         {
-            view.transform.position += new Vector3(-Data.EnemySpeed * Time.deltaTime, 0, 0);
+            view.transform.position += new Vector3(-MoveSpeed * Time.deltaTime, 0, 0);
             yield return null;
         }
     }

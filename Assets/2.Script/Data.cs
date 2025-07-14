@@ -17,8 +17,9 @@ namespace Lib
 
 
         public static WaitForSeconds MonsterSpawnTime = Yielders.WaitForSeconds(1f); // Time between monster spawns 
-        public static float EnemySpeed = 1;
-        public static Vector2 EenmyJumpVector = new Vector2(-150, 550);
+        public static float EnemySpeed_Max = 1;
+        public static float EnemySpeed_Min = 1;
+        public static Vector2 EenmyJumpVector = new Vector2(-400, Random.RandomRange(800f, 850f));
         public static float checkDistance = 0.4f; // Distance to check for other monsters
         public static WaitForSeconds MonsterJumpDelay=Yielders.WaitForSeconds(1); // Delay before jumping again
 

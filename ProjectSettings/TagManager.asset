@@ -42,12 +42,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: EnemyLayer_1
-    uniqueID: 3658854945
+  - name: EnemyLayer_3
+    uniqueID: 1743270629
     locked: 0
   - name: EnemyLayer_2
     uniqueID: 1159885567
     locked: 0
-  - name: EnemyLayer_3
-    uniqueID: 1743270629
+  - name: EnemyLayer_1
+    uniqueID: 3658854945
     locked: 0
