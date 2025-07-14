@@ -1,7 +1,8 @@
+using Lib;
 using System.Collections;
 using System.Collections.Generic;
+using System.Resources;
 using UnityEngine;
-using Lib;
 
 
 public class GameManager : Singletone<GameManager>
@@ -37,8 +38,8 @@ public class GameManager : Singletone<GameManager>
     {
         int MonsterIndex = Random.Range(0, go_Monster.Length);
         int LayerIndex = Random.Range(0, Data.LayerName.Length);
-
-        GameObject monster = Instantiate(go_Monster[MonsterIndex]);  //TODO  Pooling
+        
+        GameObject monster = Poolable.TryGetPoolable(go_Monster[MonsterIndex]);   //TODO  Pooling
         var Monster = monster.GetComponent<Monster>();
         Monster.SetUp(LayerIndex);
         monster.transform.position = truck.transform.position + Data.MonsterSpawnOffset[0];

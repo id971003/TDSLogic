@@ -6,6 +6,10 @@ namespace Lib
 {
     public static class Extention
     {
+
+    }
+    public static class ComponentExtensions
+    {
         public static T GetOrAddComponent<T>(this GameObject go) where T : Component
         {
             var comp = go.GetComponent<T>();
@@ -13,6 +17,23 @@ namespace Lib
                 return comp;
 
             return go.AddComponent<T>();
+        }
+        public static T GetComponentNoGarbage<T>(this Component c)
+        {
+            if (c.TryGetComponent(out T ret))
+            {
+                return ret;
+            }
+            return default(T);
+        }
+
+        public static T GetComponentNoGarbage<T>(this GameObject c)
+        {
+            if (c.TryGetComponent(out T ret))
+            {
+                return ret;
+            }
+            return default(T);
         }
     }
 }

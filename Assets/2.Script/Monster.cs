@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Lib;
 
-public class Monster : MonoBehaviour
+public class Monster : Poolable
 {
     [SerializeField] private GameObject view;
     [SerializeField] private int layer = 0;
