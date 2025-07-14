@@ -5,7 +5,13 @@ using Lib;
 
 public class Truck : MonoBehaviour
 {
+    GameManager _gameManager;
     Coroutine rootCorutine;
+
+    public void Start()
+    {
+        _gameManager= GameManager.Instance; 
+    }
     public void RootStart()
     {
         if(rootCorutine != null)
@@ -17,7 +23,10 @@ public class Truck : MonoBehaviour
         while(true)
         {
             yield return null;
-            transform.Translate(Data.TruckMoveVector);
+            if (_gameManager.B_Move)
+            {
+                transform.Translate(Data.TruckMoveVector);
+            }
         }
     }
 }

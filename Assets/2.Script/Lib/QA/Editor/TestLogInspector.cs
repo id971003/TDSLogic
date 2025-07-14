@@ -43,7 +43,15 @@ namespace Lib
                     {
                         GameManager.Instance.SpawnMolnster();
                     }
-
+                    GUILayout.Label("---------- Enemy----------", style);
+                    if (GUILayout.Button("truckMove"))
+                    {
+                        GameManager.Instance.TURCKMOVE(true);
+                    }
+                    if (GUILayout.Button("truckStop"))
+                    {
+                        GameManager.Instance.TURCKMOVE(false);
+                    }
                     break;
                 case 1:
                     evet_selectedTab2 = GUILayout.Toolbar(evet_selectedTab2, evet_tabs2);

@@ -8,22 +8,24 @@ using UnityEngine;
 public class GameManager : Singletone<GameManager>
 {
     [SerializeField] private Truck truck;
-
-
-
-
     Coroutine rootSpawn;
 
 
 
     [SerializeField] private GameObject[] go_Monster;
 
-
+    public bool B_Move=> b_Move; // Truck Moveable
+    [SerializeField] private bool b_Move;
     public void Start()
     {
+        b_Move = true;
         truck.RootStart();
         rootSpawn = StartCoroutine(RootSpawnMonster());
 
+    }
+    public void TURCKMOVE(bool a)
+    {
+        b_Move = a;
     }
 
     public IEnumerator RootSpawnMonster()

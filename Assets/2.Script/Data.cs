@@ -7,7 +7,8 @@ namespace Lib
     public static class Data
     {
 
-        public static Vector2 TruckMoveVector = new Vector2(0.1f * Time.deltaTime, 0);
+        public static Vector2 backgroundSpeed = new Vector2(0.2f * Time.deltaTime, 0);
+        public static Vector2 TruckMoveVector = new Vector2(0.3f * Time.deltaTime, 0);
 
 
         public static Vector3 MonsterSpawnOffset = new Vector3(10, 1, 0); // Center

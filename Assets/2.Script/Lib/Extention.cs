@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,17 @@ namespace Lib
 {
     public static class Extention
     {
+        public static void MoveToEnd<T>(this List<T> list, int index)
+        {
+            if (list == null)
+                throw new ArgumentNullException(nameof(list));
+            if (index < 0 || index >= list.Count)
+                throw new ArgumentOutOfRangeException(nameof(index));
 
+            T item = list[index];
+            list.RemoveAt(index);
+            list.Add(item);
+        }
     }
     public static class ComponentExtensions
     {
