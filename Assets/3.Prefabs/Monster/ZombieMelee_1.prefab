@@ -69,7 +69,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 2
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -116,9 +116,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.15204078, y: 0.43058544}
+  m_Offset: {x: -0.16318738, y: 0.44910252}
   serializedVersion: 2
-  m_Radius: 0.48841363
+  m_Radius: 0.4606248
 --- !u!114 &7242817982951786199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,7 +132,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   view: {fileID: 319310827380095937}
-  _layer: 0
+  collider2D: {fileID: 7379787973312283052}
+  target: {fileID: 0}
+  targe2: {fileID: 0}
+  layer: 0
 --- !u!1 &2094693183665648150
 GameObject:
   m_ObjectHideFlags: 0

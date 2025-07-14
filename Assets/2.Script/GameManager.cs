@@ -42,7 +42,7 @@ public class GameManager : Singletone<GameManager>
         GameObject monster = Poolable.TryGetPoolable(go_Monster[MonsterIndex]);   //TODO  Pooling
         var Monster = monster.GetComponent<Monster>();
         Monster.SetUp(LayerIndex);
-        monster.transform.position = truck.transform.position + Data.MonsterSpawnOffset[0];
+        monster.transform.position = truck.transform.position + Data.MonsterSpawnOffset;
     }
 
 
