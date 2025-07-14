@@ -9,7 +9,7 @@ using static UnityEngine.UI.Image;
 public class Monster : Poolable
 {
     [SerializeField] private GameObject view;
-    [SerializeField] private Collider2D collider2D;
+    [SerializeField] private CircleCollider2D collider2D;
     [SerializeField] private GameObject target;
     [SerializeField] private GameObject targe2;
     [SerializeField] private int layer = 0;
@@ -24,6 +24,7 @@ public class Monster : Poolable
     {
         canJump = true;
         layer = Layer;
+        collider2D.radius = Random.Range(0.3f, 0.5f); // 랜덤하게 collider 크기 설정
         gameObject.layer = LayerMask.NameToLayer(Data.LayerName[Layer]);
         SetSortingLayerRecursively(view,Data.LayerName[Layer]);
         if (rootMove != null)
@@ -33,6 +34,7 @@ public class Monster : Poolable
 
     public void SetSortingLayerRecursively(GameObject root, string sortingLayerName)
     {
+        //TODO GC 해결
         SpriteRenderer[] renderers = root.GetComponentsInChildren<SpriteRenderer>(true); // 비활성 포함
 
         foreach (SpriteRenderer renderer in renderers)
@@ -81,6 +83,7 @@ public class Monster : Poolable
             }
         }
     }
+    //최대 높이 넘어가면 JUMP 안되게
     IEnumerator JumpRoot()
     {
         canJump = false;
