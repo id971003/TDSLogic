@@ -9,7 +9,7 @@ using static UnityEngine.UI.Image;
 public class Monster : Poolable
 {
     [SerializeField] private GameObject view;
-    [SerializeField] private CircleCollider2D collider2D;
+    [SerializeField] private Collider2D collider2D;
     [SerializeField] private GameObject target;
     [SerializeField] private GameObject targe2;
     [SerializeField] private int layer = 0;
@@ -29,7 +29,6 @@ public class Monster : Poolable
     {
         canJump = true;
         layer = Layer;
-        collider2D.radius = 0.4f;
         gameObject.layer = LayerMask.NameToLayer(Data.LayerName[Layer]);
         SetSortingLayerRecursively(view,Data.LayerName[Layer]);
         if (rootMove != null)
@@ -67,6 +66,7 @@ public class Monster : Poolable
 
     
     Vector2 direction = Vector2.left;
+    Vector2 direction2 = Vector2.up;
     public void CheckLay()
     {
         if (!canJump)
@@ -83,7 +83,21 @@ public class Monster : Poolable
             {
                 if (hit.collider.gameObject.layer == gameObject.layer && hit.collider.gameObject != gameObject)
                 {
-                    target= hit.collider.gameObject; 
+
+                    RaycastHit2D[] hits2 = Physics2D.RaycastAll(collider2D.bounds.center, direction2, Data.checkDistance2);
+                    Debug.DrawRay(collider2D.bounds.center, direction2 * Data.checkDistance2, Color.green);
+                    foreach (RaycastHit2D hit2 in hits2)
+                    {
+                        if (hit2.collider != null)
+                        {
+                            if (hit2.collider.gameObject.layer == gameObject.layer && hit2.collider.gameObject != gameObject)
+                            {
+                                return; //위에 몬스터가 있으면 점프안함
+                            }
+                        }
+                    }
+
+                    target = hit.collider.gameObject; 
                     if (rootJump != null)
                         StopCoroutine(rootJump);
                     rootJump = StartCoroutine(JumpRoot());

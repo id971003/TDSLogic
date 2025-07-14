@@ -169,6 +169,7 @@ MonoBehaviour:
   truck: {fileID: 1489341060}
   go_Monster:
   - {fileID: 319310827380095937, guid: e48e7c461a85c463cba5a999afb91a67, type: 3}
+  b_Move: 0
 --- !u!1001 &135695950
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -849,8 +850,8 @@ MonoBehaviour:
   - {fileID: 3077569642042698786}
   - {fileID: 7538774996470802382}
   - {fileID: 7219078486351960085}
+  b_moveable: 1
   currentFrontValue: 0
-  backgroundSpeed: -0.05
 --- !u!1 &639653328
 GameObject:
   m_ObjectHideFlags: 0
@@ -1144,6 +1145,7 @@ Transform:
   m_Children:
   - {fileID: 2095338}
   - {fileID: 1887044405}
+  - {fileID: 1224304727}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &988428231
@@ -1224,12 +1226,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1224304725}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.032684, y: -0.7586501, z: -0.048470825}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.5062256, y: -3.0579247, z: 0.05179494}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 891422125}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1266146522
 GameObject:
@@ -1862,8 +1864,8 @@ MonoBehaviour:
   - {fileID: 4016841666269400645}
   - {fileID: 3708198231586112282}
   - {fileID: 4825470463826709494}
+  b_moveable: 0
   currentFrontValue: 0
-  backgroundSpeed: 0
 --- !u!212 &437466680617788831
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2441,5 +2443,4 @@ SceneRoots:
   - {fileID: 679450420}
   - {fileID: 1489341059}
   - {fileID: 1524754161756929040}
-  - {fileID: 1224304727}
   - {fileID: 891422125}

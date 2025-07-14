@@ -20,12 +20,13 @@ namespace Lib
         public static WaitForSeconds MonsterSpawnTime = Yielders.WaitForSeconds(1f); // Time between monster spawns 
         public static float EnemySpeed_Max = 1;
         public static float EnemySpeed_Min = 1;
-        public static Vector2 EenmyJumpVector = new Vector2(-400, Random.RandomRange(800f, 850f));
+        public static Vector2 EenmyJumpVector = new Vector2(-400, 700);
         public static float checkDistance = 0.4f; // Distance to check for other monsters
+        public static float checkDistance2 = 5; // Distance to check for other monsters
         public static WaitForSeconds MonsterJumpDelay=Yielders.WaitForSeconds(1); // Delay before jumping again
 
 
-        public static float CameraSpeed = 0.5f; // Speed of the camera movement
+        public static float CameraSpeed = 0.01f; // Speed of the camera movement
         public static Vector3 CameraOffSet = new Vector3(2f, 2.24f, -10f); // Offset of the camera from the target
 
 
@@ -35,7 +36,7 @@ namespace Lib
         {
             "EnemyLayer_1",
             "EnemyLayer_2",
-            //"EnemyLayer_3"
+            "EnemyLayer_3"
         };
     }
 }
