@@ -135,9 +135,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   view: {fileID: 319310827380095937}
   collider2D: {fileID: 2521210794667047843}
-  target: {fileID: 0}
-  targe2: {fileID: 0}
+  target: {fileID: 1174570720321624928}
+  anim: {fileID: 7016750400611631704}
+  MoveSpeed: 0
+  MaxHp: 0
+  Hp: 0
   layer: 0
+  attacking: 0
+  canJump: 0
 --- !u!61 &6071534707174444552
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -16,6 +16,8 @@ public class GameManager : Singletone<GameManager>
 
     public bool B_Move=> b_Move; // Truck Moveable
     [SerializeField] private bool b_Move;
+
+
     public void Start()
     {
         b_Move = true;
@@ -43,8 +45,9 @@ public class GameManager : Singletone<GameManager>
         
         GameObject monster = Poolable.TryGetPoolable(go_Monster[MonsterIndex]);   //TODO  Pooling
         var Monster = monster.GetComponent<Monster>();
-        Monster.SetUp(LayerIndex);
         monster.transform.position = truck.transform.position + Data.MonsterSpawnOffset;
+        Monster.SetUp(LayerIndex,truck.transform);
+        
     }
 
 

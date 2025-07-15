@@ -1,80 +1,176 @@
 using Lib;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.Experimental.GraphView.GraphView;
+using static UnityEngine.CullingGroup;
 using static UnityEngine.GraphicsBuffer;
 using static UnityEngine.UI.Image;
+
+
+
+enum EMONSTERSTATE
+{
+    RUN,
+    ATTACK,
+}
+
 
 public class Monster : Poolable
 {
     [SerializeField] private GameObject view;
     [SerializeField] private Collider2D collider2D;
-    [SerializeField] private GameObject target;
-    [SerializeField] private GameObject targe2;
-    [SerializeField] private int layer = 0;
+    [SerializeField] private Transform target;
+    [SerializeField] Animator anim;
+    
 
 
     Coroutine rootMove;
+    Coroutine rootAttack;
     Coroutine rootJump;
 
+    
+    [SerializeField] private float MoveSpeed;
+    [SerializeField] private float MaxHp;
+    [SerializeField] private float Hp;
 
-    private float MoveSpeed;
-    private float MaxHp;
-    private float Hp;
 
-    bool canJump;
+    [SerializeField] private int layer = 0;
+    [SerializeField] bool attacking;
+    [SerializeField] bool canJump;
 
-    public void SetUp(int Layer)
+    
+    EMONSTERSTATE eMONSTERSTATE;
+    SpriteRenderer[] renderers;
+
+    #region SetUp
+    public void SetUp(int Layer, Transform target)
     {
         canJump = true;
+        attacking = false;
         layer = Layer;
+        this.target = target;
+        MoveSpeed = UnityEngine.Random.Range(Data.EnemySpeed_Min, Data.EnemySpeed_Max);
         gameObject.layer = LayerMask.NameToLayer(Data.LayerName[Layer]);
-        SetSortingLayerRecursively(view,Data.LayerName[Layer]);
+        
+
+        SetSortingLayerRecursively(view, Data.LayerName[Layer]);
+        StatChange(EMONSTERSTATE.RUN);
+
         if (rootMove != null)
             StopCoroutine(rootMove);
         rootMove = StartCoroutine(MoveRoot());
 
-
-        MoveSpeed= Random.Range(Data.EnemySpeed_Min, Data.EnemySpeed_Max);
+        if (rootAttack != null)
+            StopCoroutine(rootAttack);
+        rootAttack = StartCoroutine(CheckAttackRoot());   
     }
 
     public void SetSortingLayerRecursively(GameObject root, string sortingLayerName)
     {
-        //TODO GC 해결
-        SpriteRenderer[] renderers = root.GetComponentsInChildren<SpriteRenderer>(true); // 비활성 포함
+        if(renderers==null)
+            renderers = root.GetComponentsInChildren<SpriteRenderer>(true); // 비활성 포함
 
         foreach (SpriteRenderer renderer in renderers)
         {
             renderer.sortingLayerName = sortingLayerName;
         }
     }
+    #endregion
 
+
+
+    #region Root
     IEnumerator MoveRoot()
     {
         while (true)
         {
-            view.transform.position += new Vector3(-MoveSpeed * Time.deltaTime, 0, 0);
+            yield return null;
+            if (!attacking)
+            {
+                view.transform.position += new Vector3(-MoveSpeed * Time.deltaTime, 0, 0);
+            }
+        }
+    }
+    IEnumerator CheckAttackRoot()
+    {
+        while (true)
+        {
+            if (!attacking)
+            {
+                CheckAttack();
+            }
             yield return null;
         }
     }
-    
-    private void Update()
+    IEnumerator JumpRoot()
     {
-        CheckLay();
+        canJump = false;
+        view.GetComponent<Rigidbody2D>().AddForce(Data.EenmyJumpVector);
+        yield return Data.MonsterJumpDelay;
+        canJump = true;
+    }
+    #endregion
+    void StatChange(EMONSTERSTATE stat)
+    {
+        eMONSTERSTATE = stat;
+        switch (eMONSTERSTATE)
+        {
+            case EMONSTERSTATE.RUN:
+                attacking = false;
+                //WALKANIM
+                break;
+            case EMONSTERSTATE.ATTACK:
+                attacking = transform;
+                //ATTACKANIM
+                break;
+            default:
+                break;
+        }
+        AnimStatChange(stat);
+    }
+    void AnimStatChange(EMONSTERSTATE stat)
+    {
+        anim.SetTrigger(stat.ToString());
+    }
+    void CheckAttack()
+    {
+        if (transform.position.x - target.transform.position.x < Data.MonsterAttackDistance)
+        {
+            StatChange(EMONSTERSTATE.ATTACK);
+        }
+        else
+        {
+            StatChange(EMONSTERSTATE.RUN);
+        }
     }
 
+    public void OnAttack()
+    {
+
+    }
+
+
     
-    Vector2 direction = Vector2.left;
-    Vector2 direction2 = Vector2.up;
-    public void CheckLay()
+
+    private void Update()
+    {
+        CheckJump();
+    }
+
+
+    #region Jump
+    public void CheckJump()
     {
         if (!canJump)
             return;
-        RaycastHit2D[] hits = Physics2D.RaycastAll(collider2D .bounds.center, direction, Data.checkDistance);
+        if (attacking)
+            return;
+        RaycastHit2D[] hits = Physics2D.RaycastAll(collider2D.bounds.center, Vector2.left, Data.checkDistance);
 
 #if UNITY_EDITOR
-        Debug.DrawRay(collider2D.bounds.center, direction * Data.checkDistance, Color.red);
+        Debug.DrawRay(collider2D.bounds.center, Vector2.left * Data.checkDistance, Color.red);
 #endif
 
         foreach (RaycastHit2D hit in hits)
@@ -84,8 +180,8 @@ public class Monster : Poolable
                 if (hit.collider.gameObject.layer == gameObject.layer && hit.collider.gameObject != gameObject)
                 {
 
-                    RaycastHit2D[] hits2 = Physics2D.RaycastAll(collider2D.bounds.center, direction2, Data.checkDistance2);
-                    Debug.DrawRay(collider2D.bounds.center, direction2 * Data.checkDistance2, Color.green);
+                    RaycastHit2D[] hits2 = Physics2D.RaycastAll(collider2D.bounds.center, Vector2.up, Data.checkDistance2);
+                    Debug.DrawRay(collider2D.bounds.center, Vector2.up * Data.checkDistance2, Color.green);
                     foreach (RaycastHit2D hit2 in hits2)
                     {
                         if (hit2.collider != null)
@@ -96,8 +192,6 @@ public class Monster : Poolable
                             }
                         }
                     }
-
-                    target = hit.collider.gameObject; 
                     if (rootJump != null)
                         StopCoroutine(rootJump);
                     rootJump = StartCoroutine(JumpRoot());
@@ -106,14 +200,8 @@ public class Monster : Poolable
         }
     }
     //최대 높이 넘어가면 JUMP 안되게
-    IEnumerator JumpRoot()
-    {
-        canJump = false;
-        view.GetComponent<Rigidbody2D>().AddForce(Data.EenmyJumpVector);
-        yield return Data.MonsterJumpDelay;
-        canJump = true;
-    }
-
     
+
+    #endregion
 
 }

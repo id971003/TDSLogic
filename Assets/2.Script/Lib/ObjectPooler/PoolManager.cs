@@ -6,7 +6,7 @@ namespace TaskbarHero
 {
     public class PoolManager : Singletone<PoolManager>
     {
-        public static PoolManager Instance { get; private set; }
+        
 
         Dictionary<Poolable, Pool> _pool = new Dictionary<Poolable, Pool>();
         Dictionary<string, Pool> _poolByName = new Dictionary<string, Pool>();
@@ -17,26 +17,14 @@ namespace TaskbarHero
             Init();
         }
 
-        private void OnDestroy()
-        {
-            if (Instance == this)
-            {
-                Instance = null;
-            }
-        }
+        
 
         public void Init()
         {
-            if (Instance != null)
-            {
-                Debug.LogWarning("PoolManager가 여러개입니다.");
-                Destroy(gameObject);
-                return;
-            }
-
+            
             gameObject.name = "PoolManager";
             _root = this.transform;
-            Instance = this;
+            
 
             DontDestroyOnLoad(this);
         }
