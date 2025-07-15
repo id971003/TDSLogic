@@ -52,6 +52,11 @@ namespace Lib
                     {
                         GameManager.Instance.TURCKMOVE(false);
                     }
+                    GUILayout.Label("---------- 정렬----------", style);
+                    if (GUILayout.Button("t정렬"))
+                    {
+                        GameManager.Instance.Testcode();
+                    }
                     break;
                 case 1:
                     evet_selectedTab2 = GUILayout.Toolbar(evet_selectedTab2, evet_tabs2);

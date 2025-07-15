@@ -8,11 +8,18 @@ using UnityEngine;
 public class GameManager : Singletone<GameManager>
 {
     [SerializeField] private Truck truck;
+    
+
     Coroutine rootSpawn;
 
 
+    
+    
+    List<HitObject> monsters = new List<HitObject>();
 
-    [SerializeField] private GameObject[] go_Monster;
+
+
+    [SerializeField] private GameObject[] PrefabMonster;
 
     public bool B_Move=> b_Move; // Truck Moveable
     [SerializeField] private bool b_Move;
@@ -40,15 +47,42 @@ public class GameManager : Singletone<GameManager>
     }
     public void SpawnMolnster()
     {
-        int MonsterIndex = Random.Range(0, go_Monster.Length);
+        int MonsterIndex = Random.Range(0, PrefabMonster.Length);
         int LayerIndex = Random.Range(0, Data.LayerName.Length);
         
-        GameObject monster = Poolable.TryGetPoolable(go_Monster[MonsterIndex]);   //TODO  Pooling
+        GameObject monster = Poolable.TryGetPoolable(PrefabMonster[MonsterIndex]);   //TODO  Pooling
         var Monster = monster.GetComponent<Monster>();
+        monsters.Add(Monster);
         monster.transform.position = truck.transform.position + Data.MonsterSpawnOffset;
-        Monster.SetUp(LayerIndex,truck.transform);
-        
+        Monster.SetUp(LayerIndex,truck.transform);   
     }
+
+    public void RemoveMonster(Monster monster)
+    {
+        if (monsters.Contains(monster))
+        {
+            monsters.Remove(monster);
+            Poolable.TryPool(monster.gameObject);
+        }
+    }
+
+
+
+
+
+
+    public Box GetCloseBox(Transform monster)
+    {
+        return truck.ReturnClosedBox(monster);
+    }
+
+    public void Testcode()
+    {
+        truck.SetBoxInfo();
+    }
+
+
+
 
 
 }

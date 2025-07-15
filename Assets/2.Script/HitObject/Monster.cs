@@ -17,8 +17,11 @@ enum EMONSTERSTATE
 }
 
 
-public class Monster : Poolable
+public class Monster : HitObject
 {
+    GameManager gameManager;
+
+    [Header("Monster Components")]
     [SerializeField] private GameObject view;
     [SerializeField] private Collider2D collider2D;
     [SerializeField] private Transform target;
@@ -30,23 +33,34 @@ public class Monster : Poolable
     Coroutine rootAttack;
     Coroutine rootJump;
 
-    
+    [Header("Monster Stats")]
+
     [SerializeField] private float MoveSpeed;
     [SerializeField] private float MaxHp;
     [SerializeField] private float Hp;
+    [SerializeField] private float Dmg;
 
 
+
+    [Header("Monster Data")]
+    [SerializeField] private bool b_Alive;
     [SerializeField] private int layer = 0;
     [SerializeField] bool attacking;
     [SerializeField] bool canJump;
-
-    
-    EMONSTERSTATE eMONSTERSTATE;
-    SpriteRenderer[] renderers;
+    [SerializeField] EMONSTERSTATE eMONSTERSTATE;
+    [SerializeField] SpriteRenderer[] renderers=null;
 
     #region SetUp
     public void SetUp(int Layer, Transform target)
     {
+        if(gameManager == null)
+        {
+            gameManager = GameManager.Instance;
+        }
+
+        renderers = null;
+
+
         canJump = true;
         attacking = false;
         layer = Layer;
@@ -69,8 +83,12 @@ public class Monster : Poolable
 
     public void SetSortingLayerRecursively(GameObject root, string sortingLayerName)
     {
-        if(renderers==null)
+
+        if (renderers == null)
+        {
             renderers = root.GetComponentsInChildren<SpriteRenderer>(true); // 비활성 포함
+        }
+
 
         foreach (SpriteRenderer renderer in renderers)
         {
@@ -148,15 +166,35 @@ public class Monster : Poolable
 
     public void OnAttack()
     {
+        var box = gameManager.GetCloseBox(transform);
+        if(box==null)
+        {
+            return;
+        }
+        box.Hit(Dmg);
+    }
+    public override void Hit(float Dmg)
+    {
+    }
+    public override void Die()
+    {
+
+        RemoveObject();
+    }
+    public void RemoveObject()
+    {
 
     }
 
 
-    
 
     private void Update()
     {
         CheckJump();
+        if (Input.GetKey(KeyCode.A))
+        {
+            Die();
+        }
     }
 
 
