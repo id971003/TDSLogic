@@ -7,6 +7,10 @@ public class Hero :  HitObject
 {
     Truck truck;
 
+    [SerializeField] private Transform ShotPosition;
+    [SerializeField] private GameObject Buttlet;
+    [SerializeField] private Vector3 ShotDirection;
+
     public override void Hit(float Dmg)
     {
         Hp -= Dmg;
@@ -21,7 +25,7 @@ public class Hero :  HitObject
     public override void Die()
     {
         gameObject.SetActive(false);
-        truck.BoxHeroDie();
+        truck.HeroDie();
     }
     public void SetUp(Truck truck)
     {
@@ -31,7 +35,15 @@ public class Hero :  HitObject
         MaxHp = Data.TruckHeroHp;
         Hp = MaxHp;
     }
+    void Shot()
+    {
+        if (!b_Alive) return;
+        GameObject buttlet = Poolable.TryGetPoolable(Buttlet);   //TODO  Pooling
+        if (buttlet == null) return;
+        buttlet.transform.position = ShotPosition.position;
+        buttlet.GetComponent<Bullet>().SetUp(ShotDirection,Data.BulletDamage);
 
+    }
 
     void Start()
     {
@@ -41,6 +53,9 @@ public class Hero :  HitObject
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Shot();
+        }
     }
 }

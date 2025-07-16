@@ -19,8 +19,9 @@ namespace Lib
         //Truck & Hero
         public static float TruckHeroHp = 100;
 
-
-
+        public static float BulletSpeed = 10;
+        public static float BulletLifeTime = 2f; // Time before the bullet is destroyed
+        public static float BulletDamage = 10; // Damage dealt by the bullet
 
 
 

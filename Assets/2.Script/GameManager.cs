@@ -1,4 +1,5 @@
 using Lib;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Resources;
@@ -21,16 +22,36 @@ public class GameManager : Singletone<GameManager>
 
     [SerializeField] private GameObject[] PrefabMonster;
 
+
+
+    public bool B_GameStart => b_GameStart; // Game Start
+    [SerializeField] private bool b_GameStart;
+
+    public Action gameEnd;
+
     public bool B_Move=> b_Move; // Truck Moveable
     [SerializeField] private bool b_Move;
 
 
+
     public void Start()
     {
+        b_GameStart = true;
         b_Move = true;
         truck.RootStart();
         rootSpawn = StartCoroutine(RootSpawnMonster());
-
+    }
+    void GameStart()
+    {
+        b_GameStart = true;
+        b_Move = true;
+        truck.RootStart();
+        rootSpawn = StartCoroutine(RootSpawnMonster());
+    }
+    void GameEnd()
+    {
+        b_GameStart = false;
+        gameEnd?.Invoke();
     }
     public void TURCKMOVE(bool a)
     {
@@ -47,8 +68,8 @@ public class GameManager : Singletone<GameManager>
     }
     public void SpawnMolnster()
     {
-        int MonsterIndex = Random.Range(0, PrefabMonster.Length);
-        int LayerIndex = Random.Range(0, Data.LayerName.Length);
+        int MonsterIndex = UnityEngine.Random.Range(0, PrefabMonster.Length);
+        int LayerIndex = UnityEngine.Random.Range(0, Data.LayerName.Length);
         
         GameObject monster = Poolable.TryGetPoolable(PrefabMonster[MonsterIndex]);   //TODO  Pooling
         var Monster = monster.GetComponent<Monster>();

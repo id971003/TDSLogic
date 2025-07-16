@@ -24,6 +24,6 @@ public class HitObject  : Poolable
     }
     public virtual void Die()
     {
-
+        TryPool(gameObject);
     }
 }

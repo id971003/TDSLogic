@@ -178,13 +178,10 @@ public class Monster : HitObject
     }
     public override void Die()
     {
-
-        RemoveObject();
-    }
-    public void RemoveObject()
-    {
+        base.Die();
 
     }
+    
 
 
 

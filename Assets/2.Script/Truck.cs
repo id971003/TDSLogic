@@ -105,9 +105,9 @@ public class Truck : MonoBehaviour
             Debug.LogWarning("Box not found in the list.");
         }
     }
-    public void BoxHeroDie()
+    public void HeroDie()
     {
-
+        //gameend
     }
 
 
