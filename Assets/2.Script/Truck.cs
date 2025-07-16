@@ -93,18 +93,20 @@ public class Truck : MonoBehaviour
     Coroutine rootBox;
     public void BoxDie(Box box)
     {
-        if (boxes.Contains(box))
+        if(boxes.Contains(box))
         {
             boxes.Remove(box);
             box.Die();
             if (rootBox != null)
                 StopCoroutine(rootBox);
-            rootBox=StartCoroutine(SetBoxInfo());
+            rootBox = StartCoroutine(SetBoxInfo());
         }
         else
         {
             Debug.LogWarning("Box not found in the list.");
         }
+
+        
     }
     public void HeroDie()
     {

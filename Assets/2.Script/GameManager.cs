@@ -19,12 +19,12 @@ public class GameManager : Singletone<GameManager>
 
 
     List<HitObject> Monsters = new List<HitObject>();
-    [SerializeField] List<HitObject> HitMonster = new List<HitObject>(); //때리고있는적
+    
 
 
 
     [SerializeField] private GameObject[] PrefabMonster;
-
+    [SerializeField] private BoxCollider2D boxcollider; //적 못지나가게 막던 Truck콜라이더
 
 
     public bool B_GameStart => b_GameStart; // Game Start
@@ -57,6 +57,7 @@ public class GameManager : Singletone<GameManager>
     public void GameEnd()
     {
         b_GameStart = false;
+        boxcollider.enabled = false;
         gameEnd?.Invoke();
     }
 
@@ -122,11 +123,11 @@ public class GameManager : Singletone<GameManager>
 
     public void RemoveMonster(Monster monster)
     {
-        if (Monsters.Contains(monster))
+        if(Monsters.RemoveBySwap(monster))
         {
-            Monsters.Remove(monster);
             Poolable.TryPool(monster.gameObject);
         }
+        
     }
     #endregion
 

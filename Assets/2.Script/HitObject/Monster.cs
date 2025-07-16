@@ -26,7 +26,7 @@ public class Monster : HitObject
     [SerializeField] private Collider2D collider2D;
     [SerializeField] private Transform target;
     [SerializeField] Animator anim;
-    
+
 
 
     Coroutine rootMove;
@@ -50,13 +50,13 @@ public class Monster : HitObject
     [SerializeField]
     Material instancedMaterial;
     [SerializeField] EMONSTERSTATE eMONSTERSTATE;
-    
-    [SerializeField] SpriteRenderer[] renderers=null;
+
+    [SerializeField] SpriteRenderer[] renderers = null;
 
     #region SetUp
-    public void SetUp(int Layer, Transform target,Material mat)
+    public void SetUp(int Layer, Transform target, Material mat)
     {
-        if(_gameManager == null)
+        if (_gameManager == null)
         {
             _gameManager = GameManager.Instance;
         }
@@ -75,7 +75,7 @@ public class Monster : HitObject
         gameObject.layer = LayerMask.NameToLayer(Data.LayerName[Layer]);
         hpSlider.SetUp();
 
-        SetSortingLayerRecursively(view, Data.LayerName[Layer],mat);
+        SetSortingLayerRecursively(view, Data.LayerName[Layer], mat);
         StatChange(EMONSTERSTATE.RUN);
 
         if (rootMove != null)
@@ -95,7 +95,7 @@ public class Monster : HitObject
         instancedMaterial.SetFloat("_HitAmount", 0);
     }
 
-    public void SetSortingLayerRecursively(GameObject root, string sortingLayerName,Material mat)
+    public void SetSortingLayerRecursively(GameObject root, string sortingLayerName, Material mat)
     {
         instancedMaterial = new Material(mat);
         if (renderers == null)
@@ -168,6 +168,12 @@ public class Monster : HitObject
     }
     void CheckAttack()
     {
+        if (!_gameManager.B_GameStart)
+        {
+            StatChange(EMONSTERSTATE.RUN);
+            return;
+        }
+
         if (transform.position.x - target.transform.position.x < Data.MonsterAttackDistance)
         {
             StatChange(EMONSTERSTATE.ATTACK);
@@ -184,7 +190,7 @@ public class Monster : HitObject
         if (!b_Alive)
             return;
         var box = _gameManager.GetCloseBox(transform);
-        if(box==null)
+        if (box == null)
         {
             return;
         }
@@ -211,15 +217,15 @@ public class Monster : HitObject
 
     IEnumerator HitRoot()
     {
-        
+
         HitColorAmount = 0.8f;
         instancedMaterial.SetFloat("_HitAmount", HitColorAmount);
-       
+
         while (true)
         {
             HitColorAmount -= 0.02f;
             instancedMaterial.SetFloat("_HitAmount", HitColorAmount);
-            if (HitColorAmount<=0)
+            if (HitColorAmount <= 0)
             {
                 HitColorAmount = 0;
                 break;
@@ -236,10 +242,10 @@ public class Monster : HitObject
         base.Die();
         _gameManager.RemoveMonster(this);
         StopAllCoroutines();
-        
+
 
     }
-    
+
 
 
 
@@ -289,7 +295,7 @@ public class Monster : HitObject
         }
     }
     //최대 높이 넘어가면 JUMP 안되게
-    
+
 
     #endregion
 

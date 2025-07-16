@@ -22,7 +22,7 @@ public class Bullet : Poolable
         float lifeTime = Data.BulletLifeTime;
         while (true)
         {
-            transform.position += direction.normalized*Data.BulletSpeed * Time.deltaTime;
+            transform.position += direction.normalized * Data.BulletSpeed * Time.deltaTime;
             lifeTime -= Time.deltaTime;
             if (lifeTime <= 0)
             {
@@ -36,7 +36,6 @@ public class Bullet : Poolable
     {
         if(collision.CompareTag("Monster"))
         {
-            Debug.Log("Hit Monster");
             HitObject hitObject = collision.GetComponentNoGarbage<HitObject>();
             hitObject.Hit(Dmg);
             Remove();

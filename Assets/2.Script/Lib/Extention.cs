@@ -18,6 +18,25 @@ namespace Lib
             list.RemoveAt(index);
             list.Add(item);
         }
+        public static bool RemoveBySwap<T>(this List<T> list,T target)
+        {
+            if (list == null)
+            {
+                
+                throw new ArgumentNullException(nameof(list));
+                return false;
+            }
+
+            
+            int index = list.IndexOf(target);
+            if (index >= 0)
+            {
+                list[index] = list[list.Count - 1]; // Swap with the last element
+                list.RemoveAt(list.Count - 1); // Remove the last element
+                return true;
+            }
+            return false;
+        }
     }
     public static class ComponentExtensions
     {
