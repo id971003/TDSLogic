@@ -10,7 +10,7 @@ public class Bullet : Poolable
     Coroutine root;
     public void SetUp(Vector3 dir,float dmg)
     {
-
+        Debug.Log(dir);
         direction = dir;
         Dmg = dmg;
         if (root != null)
