@@ -71,11 +71,11 @@ public class Monster : HitObject
         MaxHp = Data.MonsterMaxHp;
         Hp = MaxHp;
         b_Alive = true;
-        MoveSpeed = UnityEngine.Random.Range(Data.EnemySpeed_Min, Data.EnemySpeed_Max);
-        gameObject.layer = LayerMask.NameToLayer(Data.LayerName[Layer]);
+        MoveSpeed = Data.EnemySpeed;
+        gameObject.layer = LayerMask.NameToLayer(Data.LayerName[layer]);
         hpSlider.SetUp();
 
-        SetSortingLayerRecursively(view, Data.LayerName[Layer], mat);
+        SetSortingLayerRecursively(view, Data.LayerName[layer], mat);
         StatChange(EMONSTERSTATE.RUN);
 
         if (rootMove != null)
@@ -238,10 +238,10 @@ public class Monster : HitObject
 
     public override void Die()
     {
-        b_Alive = false;
         base.Die();
-        _gameManager.RemoveMonster(this);
         StopAllCoroutines();
+        _gameManager.RemoveMonster(this);
+        
 
 
     }
@@ -262,38 +262,54 @@ public class Monster : HitObject
             return;
         if (attacking)
             return;
-        RaycastHit2D[] hits = Physics2D.RaycastAll(collider2D.bounds.center, Vector2.left, Data.checkDistance);
+        
+
 
 #if UNITY_EDITOR
-        Debug.DrawRay(collider2D.bounds.center, Vector2.left * Data.checkDistance, Color.red);
+        Debug.DrawRay(collider2D.bounds.center, Vector2.left * Data.checkMonsterDistanceFront, Color.red);
+        Debug.DrawRay(collider2D.bounds.center, Vector2.up * Data.checkMonstserDistanceUp, Color.green);
 #endif
+        RaycastHit2D[] upLayers = Physics2D.RaycastAll(collider2D.bounds.center, Vector2.up, Data.checkMonstserDistanceUp);
 
-        foreach (RaycastHit2D hit in hits)
+        foreach (RaycastHit2D uplayer in upLayers)
         {
-            if (hit.collider != null)
+            if (uplayer.collider != null)
             {
-                if (hit.collider.gameObject.layer == gameObject.layer && hit.collider.gameObject != gameObject)
+                if (uplayer.collider.gameObject.layer == gameObject.layer && uplayer.collider.gameObject != gameObject)
                 {
-
-                    RaycastHit2D[] hits2 = Physics2D.RaycastAll(collider2D.bounds.center, Vector2.up, Data.checkDistance2);
-                    Debug.DrawRay(collider2D.bounds.center, Vector2.up * Data.checkDistance2, Color.green);
-                    foreach (RaycastHit2D hit2 in hits2)
+                    return; //위에 몬스터가 있으면 점프안함
+                }
+            }
+        }
+        RaycastHit2D[] frontlays = Physics2D.RaycastAll(collider2D.bounds.center, Vector2.left, Data.checkMonsterDistanceFront);
+        foreach (RaycastHit2D front in frontlays)
+        {
+            if (front.collider != null)
+            {
+                if (_gameManager.B_GameStart)
+                {
+                    if (front.collider.gameObject.layer == gameObject.layer && front.collider.gameObject != gameObject)
                     {
-                        if (hit2.collider != null)
-                        {
-                            if (hit2.collider.gameObject.layer == gameObject.layer && hit2.collider.gameObject != gameObject)
-                            {
-                                return; //위에 몬스터가 있으면 점프안함
-                            }
-                        }
+                        if (rootJump != null)
+                            StopCoroutine(rootJump);
+                        rootJump = StartCoroutine(JumpRoot());
                     }
-                    if (rootJump != null)
-                        StopCoroutine(rootJump);
-                    rootJump = StartCoroutine(JumpRoot());
+                }
+                else
+                {
+                    if ((front.collider.gameObject.layer == gameObject.layer|| front.collider.gameObject.layer == Data.TruckLayerNum)
+                        && front.collider.gameObject != gameObject)
+                    {
+                        if (rootJump != null)
+                            StopCoroutine(rootJump);
+                        rootJump = StartCoroutine(JumpRoot());
+                    }
                 }
             }
         }
     }
+
+
     //최대 높이 넘어가면 JUMP 안되게
 
 

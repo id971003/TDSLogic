@@ -16,14 +16,14 @@ public class GameManager : Singletone<GameManager>
 
 
 
-
+    ResourceManager _resourceManager;
 
     List<HitObject> Monsters = new List<HitObject>();
     
 
 
 
-    [SerializeField] private GameObject[] PrefabMonster;
+    
     [SerializeField] private BoxCollider2D boxcollider; //적 못지나가게 막던 Truck콜라이더
 
 
@@ -37,10 +37,11 @@ public class GameManager : Singletone<GameManager>
 
 
 
-    [SerializeField] Material material;
+    
 
     public void Start()
     {
+        _resourceManager= ResourceManager.Instance;
         b_GameStart = true;
         b_Move = true;
         truck.RootStart();
@@ -111,14 +112,14 @@ public class GameManager : Singletone<GameManager>
     }
     public void SpawnMolnster()
     {
-        int MonsterIndex = UnityEngine.Random.Range(0, PrefabMonster.Length);
+        int MonsterIndex = UnityEngine.Random.Range(0, _resourceManager.PrefabMonster.Length);
         int LayerIndex = UnityEngine.Random.Range(0, Data.LayerName.Length);
         
-        GameObject monster = Poolable.TryGetPoolable(PrefabMonster[MonsterIndex]);   //TODO  Pooling
+        GameObject monster = Poolable.TryGetPoolable(_resourceManager.PrefabMonster[MonsterIndex]);   //TODO  Pooling
         var Monster = monster.GetComponent<Monster>();
         Monsters.Add(Monster);
         monster.transform.position = truck.transform.position + Data.MonsterSpawnOffset;
-        Monster.SetUp(LayerIndex,truck.transform, material);   
+        Monster.SetUp(LayerIndex,truck.transform, _resourceManager.material);   
     }
 
     public void RemoveMonster(Monster monster)

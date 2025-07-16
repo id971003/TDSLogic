@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 360675798204360400}
   - component: {fileID: 3317203957649613514}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Box
   m_TagString: Hero
   m_Icon: {fileID: 0}
@@ -46,10 +46,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fa3950e7ce10024b8c7ea33fc864ada, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hpSlider: {fileID: 6692180618893665822}
   b_Alive: 1
   MaxHp: 0
   Hp: 0
+  hpSlider: {fileID: 6692180618893665822}
+  sprite: {fileID: 428821504350599970}
 --- !u!1 &6872163726244765423
 GameObject:
   m_ObjectHideFlags: 0
@@ -60,7 +61,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8800009423310853030}
   - component: {fileID: 428821504350599970}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +103,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 275478756a2e37d45a146ebde0074c85, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -143,7 +144,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 799135089495439233}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: SpritesParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,6 +175,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 360675798204360400}
     m_Modifications:
+    - target: {fileID: 990437523344244839, guid: 2787d384309ddb14fa088f917562f478, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1026000987591645993, guid: 2787d384309ddb14fa088f917562f478, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2019330755046317008, guid: 2787d384309ddb14fa088f917562f478, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2425761792087160387, guid: 2787d384309ddb14fa088f917562f478, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.65
@@ -214,9 +227,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3727080903450045062, guid: 2787d384309ddb14fa088f917562f478, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4480690653378325563, guid: 2787d384309ddb14fa088f917562f478, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4525367976661665065, guid: 2787d384309ddb14fa088f917562f478, type: 3}
       propertyPath: m_Name
       value: HPPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 4525367976661665065, guid: 2787d384309ddb14fa088f917562f478, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6440195839338014688, guid: 2787d384309ddb14fa088f917562f478, type: 3}
       propertyPath: m_AnchorMax.x

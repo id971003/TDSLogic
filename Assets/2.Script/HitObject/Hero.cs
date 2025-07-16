@@ -8,12 +8,16 @@ public class Hero : HitObject
 {
     Truck truck;
 
+    [SerializeField] private SpriteRenderer sprite;
+
     [SerializeField] private Transform Gun;
     [SerializeField] private Transform ShotPosition;
     [SerializeField] private GameObject prefab_bullet;
     [SerializeField] private Vector3 ShotDirection;
-
-    Coroutine shotRoot;
+    Material instancedMaterial;
+    float HitColorAmount;
+    Coroutine rootHit;
+    Coroutine rootShot;
 
     public override void Hit(float Dmg)
     {
@@ -24,22 +28,47 @@ public class Hero : HitObject
             return;
         }
 
+        if (rootHit != null)
+            StopCoroutine(rootHit);
+        rootHit = StartCoroutine(HitRoot());
         hpSlider.SetValue(Hp / MaxHp);
+    }
+    IEnumerator HitRoot()
+    {
+        HitColorAmount = 0.8f;
+        instancedMaterial.SetFloat("_HitAmount", HitColorAmount);
+
+        while (true)
+        {
+            HitColorAmount -= 0.02f;
+            instancedMaterial.SetFloat("_HitAmount", HitColorAmount);
+            if (HitColorAmount <= 0)
+            {
+                HitColorAmount = 0;
+                break;
+            }
+            yield return null;
+        }
+        instancedMaterial.SetFloat("_HitAmount", HitColorAmount);
+        Debug.Log("Hit Root Finished");
     }
     public override void Die()
     {
+        base.Die();
         gameObject.SetActive(false);
         truck.HeroDie();
     }
     public void SetUp(Truck truck)
     {
         b_Alive = true;
+        instancedMaterial= new Material(ResourceManager.Instance.material);
+        sprite.material = instancedMaterial;
         this.truck = truck;
         b_Alive = true;
         MaxHp = Data.TruckHeroHp;
         hpSlider.SetUp();
         Hp = MaxHp;
-        shotRoot= StartCoroutine(ShotRoot());
+        rootShot= StartCoroutine(ShotRoot());
     }
     IEnumerator ShotRoot()
     {

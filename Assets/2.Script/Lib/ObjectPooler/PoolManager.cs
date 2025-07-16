@@ -23,10 +23,7 @@ namespace TaskbarHero
         {
             
             gameObject.name = "PoolManager";
-            _root = this.transform;
-            
-
-            DontDestroyOnLoad(this);
+            _root = this.transform;   
         }
 
         public void CreatePool(Poolable original, int count = 5)
