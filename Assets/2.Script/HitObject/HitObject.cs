@@ -13,17 +13,19 @@ public class HitObject  : Poolable
     [SerializeField] protected HpSlider hpSlider; 
     public virtual void Hit(float Dmg)
     {
+        if (!B_Alive)
+            return;
         Hp -= Dmg;
         if (Hp <= 0)
         {
             Die();
             return;
         }
-
+        
         hpSlider.SetValue(Hp / MaxHp);
     }
     public virtual void Die()
     {
-        TryPool(gameObject);
+        b_Alive = false;
     }
 }

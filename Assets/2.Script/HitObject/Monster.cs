@@ -19,7 +19,7 @@ enum EMONSTERSTATE
 
 public class Monster : HitObject
 {
-    GameManager gameManager;
+    GameManager _gameManager;
 
     [Header("Monster Components")]
     [SerializeField] private GameObject view;
@@ -32,30 +32,33 @@ public class Monster : HitObject
     Coroutine rootMove;
     Coroutine rootAttack;
     Coroutine rootJump;
+    Coroutine rootHitRoot;
 
     [Header("Monster Stats")]
 
     [SerializeField] private float MoveSpeed;
-    [SerializeField] private float MaxHp;
-    [SerializeField] private float Hp;
     [SerializeField] private float Dmg;
 
 
 
+
+    [SerializeField] private float HitColorAmount;
     [Header("Monster Data")]
-    [SerializeField] private bool b_Alive;
     [SerializeField] private int layer = 0;
     [SerializeField] bool attacking;
     [SerializeField] bool canJump;
+    [SerializeField]
+    Material instancedMaterial;
     [SerializeField] EMONSTERSTATE eMONSTERSTATE;
+    
     [SerializeField] SpriteRenderer[] renderers=null;
 
     #region SetUp
-    public void SetUp(int Layer, Transform target)
+    public void SetUp(int Layer, Transform target,Material mat)
     {
-        if(gameManager == null)
+        if(_gameManager == null)
         {
-            gameManager = GameManager.Instance;
+            _gameManager = GameManager.Instance;
         }
 
         renderers = null;
@@ -65,11 +68,14 @@ public class Monster : HitObject
         attacking = false;
         layer = Layer;
         this.target = target;
+        MaxHp = Data.MonsterMaxHp;
+        Hp = MaxHp;
+        b_Alive = true;
         MoveSpeed = UnityEngine.Random.Range(Data.EnemySpeed_Min, Data.EnemySpeed_Max);
         gameObject.layer = LayerMask.NameToLayer(Data.LayerName[Layer]);
-        
+        hpSlider.SetUp();
 
-        SetSortingLayerRecursively(view, Data.LayerName[Layer]);
+        SetSortingLayerRecursively(view, Data.LayerName[Layer],mat);
         StatChange(EMONSTERSTATE.RUN);
 
         if (rootMove != null)
@@ -78,12 +84,20 @@ public class Monster : HitObject
 
         if (rootAttack != null)
             StopCoroutine(rootAttack);
-        rootAttack = StartCoroutine(CheckAttackRoot());   
+        rootAttack = StartCoroutine(CheckAttackRoot());
+
+        if (rootHitRoot != null)
+            StopCoroutine(rootHitRoot);
+
+
+
+        HitColorAmount = 0;
+        instancedMaterial.SetFloat("_HitAmount", 0);
     }
 
-    public void SetSortingLayerRecursively(GameObject root, string sortingLayerName)
+    public void SetSortingLayerRecursively(GameObject root, string sortingLayerName,Material mat)
     {
-
+        instancedMaterial = new Material(mat);
         if (renderers == null)
         {
             renderers = root.GetComponentsInChildren<SpriteRenderer>(true); // 비활성 포함
@@ -92,6 +106,7 @@ public class Monster : HitObject
 
         foreach (SpriteRenderer renderer in renderers)
         {
+            renderer.material = instancedMaterial;
             renderer.sortingLayerName = sortingLayerName;
         }
     }
@@ -130,6 +145,7 @@ public class Monster : HitObject
         canJump = true;
     }
     #endregion
+
     void StatChange(EMONSTERSTATE stat)
     {
         eMONSTERSTATE = stat;
@@ -137,11 +153,9 @@ public class Monster : HitObject
         {
             case EMONSTERSTATE.RUN:
                 attacking = false;
-                //WALKANIM
                 break;
             case EMONSTERSTATE.ATTACK:
-                attacking = transform;
-                //ATTACKANIM
+                attacking = true;
                 break;
             default:
                 break;
@@ -164,21 +178,65 @@ public class Monster : HitObject
         }
     }
 
+    #region  AnimationEvent
     public void OnAttack()
     {
-        var box = gameManager.GetCloseBox(transform);
+        if (!b_Alive)
+            return;
+        var box = _gameManager.GetCloseBox(transform);
         if(box==null)
         {
             return;
         }
         box.Hit(Dmg);
     }
+    public void EndAttack()
+    {
+        if (!b_Alive)
+            return;
+        attacking = false;
+        CheckAttack();
+    }
+    #endregion
     public override void Hit(float Dmg)
     {
+        base.Hit(Dmg);
+
+        if (rootHitRoot != null)
+            StopCoroutine(rootHitRoot);
+        if (!b_Alive)
+            return;
+        rootHitRoot = StartCoroutine(HitRoot());
     }
+
+    IEnumerator HitRoot()
+    {
+        
+        HitColorAmount = 0.8f;
+        instancedMaterial.SetFloat("_HitAmount", HitColorAmount);
+       
+        while (true)
+        {
+            HitColorAmount -= 0.02f;
+            instancedMaterial.SetFloat("_HitAmount", HitColorAmount);
+            if (HitColorAmount<=0)
+            {
+                HitColorAmount = 0;
+                break;
+            }
+            yield return null;
+        }
+        instancedMaterial.SetFloat("_HitAmount", HitColorAmount);
+    }
+
+
     public override void Die()
     {
+        b_Alive = false;
         base.Die();
+        _gameManager.RemoveMonster(this);
+        StopAllCoroutines();
+        
 
     }
     
@@ -188,10 +246,6 @@ public class Monster : HitObject
     private void Update()
     {
         CheckJump();
-        if (Input.GetKey(KeyCode.A))
-        {
-            Die();
-        }
     }
 
 

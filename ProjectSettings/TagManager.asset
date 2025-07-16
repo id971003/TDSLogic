@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Hero
+  - Monster
   layers:
   - Default
   - TransparentFX
@@ -50,4 +51,7 @@ TagManager:
     locked: 0
   - name: EnemyLayer_1
     uniqueID: 3658854945
+    locked: 0
+  - name: Bullet
+    uniqueID: 2387390519
     locked: 0

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Lib;
+using TaskbarHero;
 
 public class Truck : MonoBehaviour
 {
@@ -107,7 +108,8 @@ public class Truck : MonoBehaviour
     }
     public void HeroDie()
     {
-        //gameend
+        _gameManager.GameEnd();
+        
     }
 
 

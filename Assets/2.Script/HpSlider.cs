@@ -9,18 +9,28 @@ public class HpSlider : MonoBehaviour
     [SerializeField] private float TargetValue;
 
     Coroutine rootSet;
-    public void Start() 
+    public void SetUp()
     {
         hpslider.value = 1;
         TargetValue = 1;
         hpslider.gameObject.SetActive(false);
     }
+    public void OnDisable()
+    {
+        if (rootSet != null)
+        {
+            StopCoroutine(rootSet);
+            rootSet = null;
+            
+        }
+        hpslider.gameObject.SetActive(false);
+    }
+
     public void SetValue(float value)
     {
         if(rootSet==null)
         {
             rootSet = StartCoroutine(SetRoot());
-            Debug.Log("ROOTSTARRT");
             hpslider.gameObject.SetActive(true);
         }
         TargetValue = value;

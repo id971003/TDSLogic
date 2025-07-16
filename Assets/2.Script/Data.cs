@@ -18,11 +18,13 @@ namespace Lib
 
         //Truck & Hero
         public static float TruckHeroHp = 100;
+        public static int TruckStopMonsterCount = 3;
+        public static WaitForSeconds TruckCheckCount = Yielders.WaitForSeconds(0.2f); // 트럭 근방 적 체크시간
 
-        public static float BulletSpeed = 10;
-        public static float BulletLifeTime = 2f; // Time before the bullet is destroyed
-        public static float BulletDamage = 10; // Damage dealt by the bullet
-
+        public static WaitForSeconds TruckHeroShotDelay = Yielders.WaitForSeconds(1f); // Delay between shots
+        public static float BulletLifeTime = 0.3f; // Time before the bullet is destroyed
+        public static float BulletDamage = 5; // Damage dealt by the bullet
+        public static float BulletSpeed = 30;
 
 
 
@@ -31,12 +33,13 @@ namespace Lib
         public static WaitForSeconds MonsterSpawnTime = Yielders.WaitForSeconds(1f); // Time between monster spawns 
         public static float EnemySpeed_Max = 1;
         public static float EnemySpeed_Min = 1;
+        public static float MonsterMaxHp = 15; // Maximum health of the monster
         public static Vector2 EenmyJumpVector = new Vector2(-400, 800);
         public static float checkDistance = 0.4f; // Distance to check for other monsters
         public static float checkDistance2 = 5; // Distance to check for other monsters
-        public static WaitForSeconds MonsterJumpDelay=Yielders.WaitForSeconds(1); // Delay before jumping again
-        public static float MonsterAttackDistance = 1.6f;
-        public static float MonsterDmg=3;
+        public static WaitForSeconds MonsterJumpDelay=Yielders.WaitForSeconds(2); // Delay before jumping again
+        public static float MonsterAttackDistance = 1.8f;
+        public static float MonsterDmg=1;
 
 
 

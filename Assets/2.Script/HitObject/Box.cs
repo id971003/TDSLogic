@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class Box :  HitObject
 {
-
-
-    
     Truck truck;
     public void SetUp(Truck truck)
     {
@@ -15,6 +12,7 @@ public class Box :  HitObject
         b_Alive = true;
         MaxHp = Data.TruckHeroHp;
         Hp = MaxHp;
+        hpSlider.SetUp();
     }
     public override void Hit(float Dmg)
     {

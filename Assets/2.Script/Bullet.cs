@@ -7,15 +7,14 @@ public class Bullet : Poolable
 {
     [SerializeField] private float Dmg;
     Vector3 direction;
-    Coroutine root;
+    Coroutine rootMove;
     public void SetUp(Vector3 dir,float dmg)
     {
-        Debug.Log(dir);
         direction = dir;
         Dmg = dmg;
-        if (root != null)
-            StopCoroutine(root);
-        root= StartCoroutine(MoveRoot());
+        if (rootMove != null)
+            StopCoroutine(rootMove);
+        rootMove= StartCoroutine(MoveRoot());
 
     }
     IEnumerator MoveRoot()
@@ -35,9 +34,10 @@ public class Bullet : Poolable
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        HitObject hitObject = collision.GetComponentNoGarbage<HitObject>();
-        if (hitObject != null && hitObject.B_Alive)
+        if(collision.CompareTag("Monster"))
         {
+            Debug.Log("Hit Monster");
+            HitObject hitObject = collision.GetComponentNoGarbage<HitObject>();
             hitObject.Hit(Dmg);
             Remove();
         }
@@ -45,8 +45,8 @@ public class Bullet : Poolable
 
     public void Remove()
     {
-        if (root != null)
-            StopCoroutine(root);
+        if (rootMove != null)
+            StopCoroutine(rootMove);
         TryPool(gameObject);
     }
 }

@@ -112,7 +112,7 @@ namespace TaskbarHero
 
         public Poolable Pop(Poolable original, Transform parent, string poolName = null)
         {
-            // FIXME: 현재 original.name에서 가비지 생성중
+            
             Pool pool;
 
             if (poolName != null)
