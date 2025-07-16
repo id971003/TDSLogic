@@ -16,7 +16,8 @@ namespace Lib
         public static Vector3 HeroGapY = new Vector3(0, 1.4f);// 1.409f, 0);
 
 
-
+        //Truck & Hero
+        public static float TruckHeroHp = 100;
 
 
 
@@ -33,7 +34,8 @@ namespace Lib
         public static float checkDistance = 0.4f; // Distance to check for other monsters
         public static float checkDistance2 = 5; // Distance to check for other monsters
         public static WaitForSeconds MonsterJumpDelay=Yielders.WaitForSeconds(1); // Delay before jumping again
-        public static float MonsterAttackDistance = 1.4f;
+        public static float MonsterAttackDistance = 1.6f;
+        public static float MonsterDmg=3;
 
 
 

@@ -1,3 +1,4 @@
+using Lib;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,23 +6,24 @@ using UnityEngine;
 public class Box :  HitObject
 {
 
-    public bool B_Alive => b_Alive; 
-    [SerializeField] private bool b_Alive = true;
-    [SerializeField] private float MaxHp;
-    [SerializeField] private float Hp;
-    [SerializeField] private GameObject go_hpSlider;
-    public void SetUp()
-    {
-        b_Alive = true;
 
+    
+    Truck truck;
+    public void SetUp(Truck truck)
+    {
+        this.truck = truck;
+        b_Alive = true;
+        MaxHp = Data.TruckHeroHp;
+        Hp = MaxHp;
     }
     public override void Hit(float Dmg)
     {
-        Debug.Log(gameObject.name + " Hit " + Dmg); 
+        base.Hit(Dmg);
     }
 
     public override void Die()
     {
-        
+        gameObject.SetActive(false);
+        truck.BoxDie(this); 
     }
 }

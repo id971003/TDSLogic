@@ -60,7 +60,7 @@ public class Monster : HitObject
 
         renderers = null;
 
-
+        Dmg = Data.MonsterDmg;
         canJump = true;
         attacking = false;
         layer = Layer;

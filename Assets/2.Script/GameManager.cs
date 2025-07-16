@@ -71,14 +71,14 @@ public class GameManager : Singletone<GameManager>
 
 
 
-    public Box GetCloseBox(Transform monster)
+    public HitObject GetCloseBox(Transform monster)
     {
-        return truck.ReturnClosedBox(monster);
+        return truck.ReturnCurrentHitPoj(monster);
     }
 
     public void Testcode()
     {
-        truck.SetBoxInfo();
+        
     }
 
 

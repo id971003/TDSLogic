@@ -18,7 +18,18 @@ public class Truck : MonoBehaviour
 
     public void Start()
     {
-        _gameManager= GameManager.Instance; 
+        _gameManager= GameManager.Instance;
+        SetUp();
+
+    }
+    void SetUp()
+    {
+        foreach(var a in boxes)
+        {
+            var box = a as Box;
+            box.SetUp(this);
+        }
+        Hero.SetUp(this);
     }
     public void RootStart()
     {
@@ -46,13 +57,13 @@ public class Truck : MonoBehaviour
 
 
     //적이랑 가장 가까운 박스 반환
-    public Box ReturnClosedBox(Transform trans)
+    public HitObject ReturnCurrentHitPoj(Transform trans)
     {
         Box closestBox = null;
         float closestDistance = float.MaxValue;
         foreach (Box box in boxes)
         {
-            if (!box.B_Alive) continue; // Skip dead boxes
+            if (!box.B_Alive) continue; // 죽은 박스는 스킵
             float distance = Vector3.Distance(trans.position, box.transform.position);
             if (distance < closestDistance)
             {
@@ -60,27 +71,88 @@ public class Truck : MonoBehaviour
                 closestBox = box;
             }
         }
-        if(closestBox == null) 
-            return null; // No boxes available
-        return closestBox;  
+        if (closestBox != null)
+        {
+            return closestBox;
+        }
+        else
+        {
+            // 박스가 없으면 Hero를 반환
+            if(Hero.B_Alive)
+                    return Hero;
+            else
+            {
+                return null;
+            }
+        }
+            
     }
 
     //박스 터젔을때 재 정렬
-    public void SetBoxInfo()
+    Coroutine rootBox;
+    public void BoxDie(Box box)
     {
-        
-        for(int i=0;i< boxes.Count;i++)
+        if (boxes.Contains(box))
         {
-            boxes[i].transform.localPosition =  Data.BoxStartPositionY + (Data.BoxGapY * i);
-        }
-        if (boxes.Count == 0)
-        {
-            Hero.transform.localPosition = Data.BoxStartPositionY;
+            boxes.Remove(box);
+            box.Die();
+            if (rootBox != null)
+                StopCoroutine(rootBox);
+            rootBox=StartCoroutine(SetBoxInfo());
         }
         else
-        { 
-            Hero.transform.localPosition = Data.BoxStartPositionY + (Data.BoxGapY * (boxes.Count - 1)) + (Data.HeroGapY);
+        {
+            Debug.LogWarning("Box not found in the list.");
+        }
+    }
+    public void BoxHeroDie()
+    {
+
+    }
+
+
+    // 기존 코드 교체: 박스와 Hero의 위치를 Lerp로 서서히 이동
+    IEnumerator SetBoxInfo()
+    {
+        const float lerpDuration = 0.3f;
+        float elapsed = 0f;
+
+        // 현재 위치 저장
+        Vector3[] startBoxPositions = new Vector3[boxes.Count];
+        Vector3[] targetBoxPositions = new Vector3[boxes.Count];
+        for (int i = 0; i < boxes.Count; i++)
+        {
+            startBoxPositions[i] = boxes[i].transform.localPosition;
+            targetBoxPositions[i] = Data.BoxStartPositionY + (Data.BoxGapY * i);
+        }
+        Vector3 startHeroPos = Hero.transform.localPosition;
+        Vector3 targetHeroPos;
+        if (boxes.Count == 0)
+        {
+            targetHeroPos = Data.BoxStartPositionY;
+        }
+        else
+        {
+            targetHeroPos = Data.BoxStartPositionY + (Data.BoxGapY * (boxes.Count - 1)) + (Data.HeroGapY);
         }
 
+        while (elapsed < lerpDuration)
+        {
+            float t = elapsed / lerpDuration;
+            for (int i = 0; i < boxes.Count; i++)
+            {
+                boxes[i].transform.localPosition = Vector3.Lerp(startBoxPositions[i], targetBoxPositions[i], t);
+            }
+            Hero.transform.localPosition = Vector3.Lerp(startHeroPos, targetHeroPos, t);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        // 마지막 위치 보정
+        for (int i = 0; i < boxes.Count; i++)
+        {
+            boxes[i].transform.localPosition = targetBoxPositions[i];
+        }
+        Hero.transform.localPosition = targetHeroPos;
+        StopCoroutine(rootBox);
     }
 }
