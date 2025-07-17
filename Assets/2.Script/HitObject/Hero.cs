@@ -48,24 +48,7 @@ public class Hero : HitObject
         rootHit = StartCoroutine(HitRoot());
         hpSlider.SetValue(Hp / MaxHp);
     }
-    IEnumerator HitRoot()
-    {
-        HitColorAmount = 0.8f;
-        instancedMaterial.SetFloat("_HitAmount", HitColorAmount);
-
-        while (true)
-        {
-            HitColorAmount -= 0.02f;
-            instancedMaterial.SetFloat("_HitAmount", HitColorAmount);
-            if (HitColorAmount <= 0)
-            {
-                HitColorAmount = 0;
-                break;
-            }
-            yield return null;
-        }
-        instancedMaterial.SetFloat("_HitAmount", HitColorAmount);
-    }
+    
     protected override void Die()
     {
         base.Die();

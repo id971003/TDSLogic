@@ -22,9 +22,7 @@ namespace Lib
         {
             if (list == null)
             {
-                
                 throw new ArgumentNullException(nameof(list));
-                return false;
             }
 
             
