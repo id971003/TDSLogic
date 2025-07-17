@@ -8,8 +8,7 @@ public class Box :  HitObject
 {
     Coroutine rootHitRoot;
     [SerializeField] SpriteRenderer sprite;
-    Material instancedMaterial;
-    float HitColorAmount = 0;
+    
     Truck truck;
     public void SetUp(Truck truck)
     {
@@ -18,30 +17,11 @@ public class Box :  HitObject
         MaxHp = Data.TruckHeroHp;
         Hp = MaxHp;
         hpSlider.SetUp();
-        instancedMaterial = new Material(ResourceManager.Instance.material);
-        sprite.material = instancedMaterial;
-        instancedMaterial.SetFloat("_HitAmount", 0);
+
+        base.SetUpMaterial();
     }
 
-    IEnumerator HitRoot()
-    {
-        HitColorAmount = 0.8f;
-        instancedMaterial.SetFloat("_HitAmount", HitColorAmount);
-
-        while (true)
-        {
-            HitColorAmount -= 0.02f;
-            instancedMaterial.SetFloat("_HitAmount", HitColorAmount);
-            if (HitColorAmount <= 0)
-            {
-                HitColorAmount = 0;
-                break;
-            }
-            yield return null;
-        }
-        instancedMaterial.SetFloat("_HitAmount", HitColorAmount);
-        Debug.Log("Hit Root Finished");
-    }
+    
     public override void Hit(float Dmg)
     {
         base.Hit(Dmg);
@@ -53,7 +33,7 @@ public class Box :  HitObject
 
     }
 
-    public override void Die()
+    protected override void Die()
     {
         base.Die();
         gameObject.SetActive(false);

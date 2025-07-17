@@ -102,7 +102,7 @@ public class GameManager : Singletone<GameManager>
     #region Monster
     public IEnumerator RootSpawnMonster()
     {
-        while (b_GameStart)
+        while (truck)
         {
             SpawnMolnster();
             yield return Data.MonsterSpawnTime;

@@ -98,11 +98,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 976703acbd384c549a64956be846175a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HitColorAmount: 0
+  renderers: []
+  instancedMaterial: {fileID: 0}
   b_Alive: 1
   MaxHp: 0
   Hp: 0
   hpSlider: {fileID: 5763274820648458331}
-  view: {fileID: 319310827380095937}
+  rg2d: {fileID: 6101209027247224953}
   collider2D: {fileID: 2521210794667047843}
   target: {fileID: 1174570720321624928}
   anim: {fileID: 7016750400611631704}
@@ -112,7 +115,6 @@ MonoBehaviour:
   layer: 0
   attacking: 0
   canJump: 0
-  instancedMaterial: {fileID: 0}
   eMONSTERSTATE: 0
   renderers: []
 --- !u!70 &2521210794667047843

@@ -22,7 +22,7 @@ public class Monster : HitObject
     GameManager _gameManager;
 
     [Header("Monster Components")]
-    [SerializeField] private GameObject view;
+    [SerializeField] private Rigidbody2D rg2d;
     [SerializeField] private Collider2D collider2D;
     [SerializeField] private Transform target;
     [SerializeField] Animator anim;
@@ -42,16 +42,16 @@ public class Monster : HitObject
 
 
 
-    [SerializeField] private float HitColorAmount;
+    
     [Header("Monster Data")]
     [SerializeField] private int layer = 0;
     [SerializeField] bool attacking;
     [SerializeField] bool canJump;
-    [SerializeField]
-    Material instancedMaterial;
+    
+    
     [SerializeField] EMONSTERSTATE eMONSTERSTATE;
 
-    [SerializeField] SpriteRenderer[] renderers = null;
+    
 
     #region SetUp
     public void SetUp(int Layer, Transform target, Material mat)
@@ -74,8 +74,8 @@ public class Monster : HitObject
         MoveSpeed = Data.EnemySpeed;
         gameObject.layer = LayerMask.NameToLayer(Data.LayerName[layer]);
         hpSlider.SetUp();
-
-        SetSortingLayerRecursively(view, Data.LayerName[layer], mat);
+        base.SetUpMaterial();
+        SetSortingLayerRecursively(Data.LayerName[layer]);
         StatChange(EMONSTERSTATE.RUN);
 
         if (rootMove != null)
@@ -95,18 +95,10 @@ public class Monster : HitObject
         instancedMaterial.SetFloat("_HitAmount", 0);
     }
 
-    public void SetSortingLayerRecursively(GameObject root, string sortingLayerName, Material mat)
+    public void SetSortingLayerRecursively( string sortingLayerName)
     {
-        instancedMaterial = new Material(mat);
-        if (renderers == null)
-        {
-            renderers = root.GetComponentsInChildren<SpriteRenderer>(true); // 비활성 포함
-        }
-
-
         foreach (SpriteRenderer renderer in renderers)
         {
-            renderer.material = instancedMaterial;
             renderer.sortingLayerName = sortingLayerName;
         }
     }
@@ -120,7 +112,7 @@ public class Monster : HitObject
             yield return null;
             if (!attacking)
             {
-                view.transform.position += new Vector3(-MoveSpeed * Time.deltaTime, 0, 0);
+                gameObject.transform.position += new Vector3(-MoveSpeed * Time.deltaTime, 0, 0);
             }
         }
     }
@@ -138,7 +130,7 @@ public class Monster : HitObject
     IEnumerator JumpRoot()
     {
         canJump = false;
-        view.GetComponent<Rigidbody2D>().AddForce(Data.EenmyJumpVector);
+        rg2d.AddForce(Data.EenmyJumpVector);
         yield return Data.MonsterJumpDelay;
         canJump = true;
     }
@@ -219,26 +211,8 @@ public class Monster : HitObject
             return;
         rootHitRoot = StartCoroutine(HitRoot());
     }
-    IEnumerator HitRoot()
-    {
 
-        HitColorAmount = 0.8f;
-        instancedMaterial.SetFloat("_HitAmount", HitColorAmount);
-
-        while (true)
-        {
-            HitColorAmount -= 0.02f;
-            instancedMaterial.SetFloat("_HitAmount", HitColorAmount);
-            if (HitColorAmount <= 0)
-            {
-                HitColorAmount = 0;
-                break;
-            }
-            yield return null;
-        }
-        instancedMaterial.SetFloat("_HitAmount", HitColorAmount);
-    }
-    public override void Die()
+    protected override void Die()
     {
         base.Die();
         StopAllCoroutines();

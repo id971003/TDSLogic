@@ -14,10 +14,25 @@ public class Hero : HitObject
     [SerializeField] private Transform ShotPosition;
     [SerializeField] private GameObject prefab_bullet;
     [SerializeField] private Vector3 ShotDirection;
-    Material instancedMaterial;
-    float HitColorAmount;
-    Coroutine rootHit;
+    
     Coroutine rootShot;
+    
+
+
+
+    public void SetUp(Truck truck)
+    {
+        b_Alive = true;
+        instancedMaterial = new Material(ResourceManager.Instance.material);
+        sprite.material = instancedMaterial;
+        this.truck = truck;
+        b_Alive = true;
+        MaxHp = Data.TruckHeroHp;
+        hpSlider.SetUp();
+        Hp = MaxHp;
+        base.SetUpMaterial();
+        rootShot = StartCoroutine(ShotRoot());
+    }
 
     public override void Hit(float Dmg)
     {
@@ -50,26 +65,14 @@ public class Hero : HitObject
             yield return null;
         }
         instancedMaterial.SetFloat("_HitAmount", HitColorAmount);
-        Debug.Log("Hit Root Finished");
     }
-    public override void Die()
+    protected override void Die()
     {
         base.Die();
         gameObject.SetActive(false);
         truck.HeroDie();
     }
-    public void SetUp(Truck truck)
-    {
-        b_Alive = true;
-        instancedMaterial= new Material(ResourceManager.Instance.material);
-        sprite.material = instancedMaterial;
-        this.truck = truck;
-        b_Alive = true;
-        MaxHp = Data.TruckHeroHp;
-        hpSlider.SetUp();
-        Hp = MaxHp;
-        rootShot= StartCoroutine(ShotRoot());
-    }
+
     IEnumerator ShotRoot()
     {
         while (b_Alive)

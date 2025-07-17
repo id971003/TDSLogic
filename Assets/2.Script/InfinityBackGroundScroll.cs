@@ -56,7 +56,6 @@ public class InfinityBackGroundScroll : MonoBehaviour
             background.transform.position = new Vector3(currentFrontValue + defaultDistance, background.transform.position.y, background.transform.position.z);
             currentFrontValue = background.transform.position.x; //현재 앞쪽 배경의 위치 업데이트
             BackGroundList.MoveToEnd(0);
-            Debug.Log("뒤로보냄");
         }
     }
 

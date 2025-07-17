@@ -46,6 +46,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fa3950e7ce10024b8c7ea33fc864ada, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HitColorAmount: 0
+  renderers:
+  - {fileID: 428821504350599970}
+  instancedMaterial: {fileID: 0}
   b_Alive: 1
   MaxHp: 0
   Hp: 0
