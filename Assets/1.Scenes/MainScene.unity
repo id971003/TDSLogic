@@ -1851,12 +1851,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7937661097912205140, guid: 39e73014526a04149a4b4bff2302893b, type: 3}
       propertyPath: renderers.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7937661097912205140, guid: 39e73014526a04149a4b4bff2302893b, type: 3}
       propertyPath: renderers.Array.data[0]
       value: 
       objectReference: {fileID: 2012342748}
+    - target: {fileID: 7937661097912205140, guid: 39e73014526a04149a4b4bff2302893b, type: 3}
+      propertyPath: renderers.Array.data[1]
+      value: 
+      objectReference: {fileID: 1938188571}
     - target: {fileID: 8958240697474582917, guid: 39e73014526a04149a4b4bff2302893b, type: 3}
       propertyPath: m_Name
       value: Hero
@@ -2085,6 +2089,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3faf085c931b5ba4d8abd24beaff74da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!212 &1938188571 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 7518584993005002447, guid: 39e73014526a04149a4b4bff2302893b, type: 3}
+  m_PrefabInstance: {fileID: 1544987788}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2007713438
 GameObject:
   m_ObjectHideFlags: 0
