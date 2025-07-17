@@ -41,21 +41,21 @@ namespace Lib
                     GUILayout.Label("---------- Enemy----------", style);
                     if (GUILayout.Button("SpawnMonster"))
                     {
-                        GameManager.Instance.SpawnMolnster();
+                        
                     }
                     GUILayout.Label("---------- Enemy----------", style);
                     if (GUILayout.Button("truckMove"))
                     {
-                        GameManager.Instance.TURCKMOVE(true);
+                        
                     }
                     if (GUILayout.Button("truckStop"))
                     {
-                        GameManager.Instance.TURCKMOVE(false);
+                        
                     }
                     GUILayout.Label("---------- 정렬----------", style);
                     if (GUILayout.Button("t정렬"))
                     {
-                        GameManager.Instance.Testcode();
+                        
                     }
                     break;
                 case 1:

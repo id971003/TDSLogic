@@ -112,8 +112,6 @@ public class Monster : HitObject
     }
     #endregion
 
-
-
     #region Root
     IEnumerator MoveRoot()
     {
@@ -146,6 +144,7 @@ public class Monster : HitObject
     }
     #endregion
 
+    #region Stat
     void StatChange(EMONSTERSTATE stat)
     {
         eMONSTERSTATE = stat;
@@ -166,6 +165,9 @@ public class Monster : HitObject
     {
         anim.SetTrigger(stat.ToString());
     }
+    #endregion
+
+    #region Attack
     void CheckAttack()
     {
         if (!_gameManager.B_GameStart)
@@ -183,6 +185,7 @@ public class Monster : HitObject
             StatChange(EMONSTERSTATE.RUN);
         }
     }
+    #endregion
 
     #region  AnimationEvent
     public void OnAttack()
@@ -204,6 +207,8 @@ public class Monster : HitObject
         CheckAttack();
     }
     #endregion
+
+    #region HitAndDie
     public override void Hit(float Dmg)
     {
         base.Hit(Dmg);
@@ -214,7 +219,6 @@ public class Monster : HitObject
             return;
         rootHitRoot = StartCoroutine(HitRoot());
     }
-
     IEnumerator HitRoot()
     {
 
@@ -234,28 +238,19 @@ public class Monster : HitObject
         }
         instancedMaterial.SetFloat("_HitAmount", HitColorAmount);
     }
-
-
     public override void Die()
     {
         base.Die();
         StopAllCoroutines();
         _gameManager.RemoveMonster(this);
-        
-
-
     }
+    #endregion
 
-
-
-
+    #region Jump
     private void Update()
     {
         CheckJump();
     }
-
-
-    #region Jump
     public void CheckJump()
     {
         if (!canJump)
@@ -264,11 +259,13 @@ public class Monster : HitObject
             return;
         
 
-
 #if UNITY_EDITOR
         Debug.DrawRay(collider2D.bounds.center, Vector2.left * Data.checkMonsterDistanceFront, Color.red);
         Debug.DrawRay(collider2D.bounds.center, Vector2.up * Data.checkMonstserDistanceUp, Color.green);
+        Debug.DrawRay(collider2D.bounds.center, Data.checkLeftUpVector * Data.checkMonstserDistanceLeftUp, Color.blue);
 #endif
+
+        //위에 몬스터있는지체크
         RaycastHit2D[] upLayers = Physics2D.RaycastAll(collider2D.bounds.center, Vector2.up, Data.checkMonstserDistanceUp);
 
         foreach (RaycastHit2D uplayer in upLayers)
@@ -281,6 +278,23 @@ public class Monster : HitObject
                 }
             }
         }
+
+        //대각선에 있는지체크
+        RaycastHit2D[] upLeftLayers = Physics2D.RaycastAll(collider2D.bounds.center, Data.checkLeftUpVector, Data.checkMonstserDistanceLeftUp);
+
+        foreach (RaycastHit2D upLeftlayer in upLeftLayers)
+        {
+            if (upLeftlayer.collider != null)
+            {
+                if (upLeftlayer.collider.gameObject.layer == gameObject.layer && upLeftlayer.collider.gameObject != gameObject)
+                {
+                    return; //위에 몬스터가 있으면 점프안함
+                }
+            }
+        }
+
+
+        //앞에있는지체크
         RaycastHit2D[] frontlays = Physics2D.RaycastAll(collider2D.bounds.center, Vector2.left, Data.checkMonsterDistanceFront);
         foreach (RaycastHit2D front in frontlays)
         {
@@ -308,11 +322,6 @@ public class Monster : HitObject
             }
         }
     }
-
-
-    //최대 높이 넘어가면 JUMP 안되게
-
-
     #endregion
 
 }

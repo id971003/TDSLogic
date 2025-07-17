@@ -42,18 +42,16 @@ public class GameManager : Singletone<GameManager>
     public void Start()
     {
         _resourceManager= ResourceManager.Instance;
-        b_GameStart = true;
-        b_Move = true;
-        truck.RootStart();
-        rootSpawn = StartCoroutine(RootSpawnMonster());
-        rootCheckCloseMonster = StartCoroutine(CheckCloseMonsterRoot());
+        GameStart();
     }
+    #region StartAndEnd
     void GameStart()
     {
         b_GameStart = true;
         b_Move = true;
         truck.RootStart();
         rootSpawn = StartCoroutine(RootSpawnMonster());
+        rootCheckCloseMonster = StartCoroutine(CheckCloseMonsterRoot());
     }
     public void GameEnd()
     {
@@ -61,6 +59,7 @@ public class GameManager : Singletone<GameManager>
         boxcollider.enabled = false;
         gameEnd?.Invoke();
     }
+    #endregion
 
     #region Truck controll
 
@@ -100,7 +99,6 @@ public class GameManager : Singletone<GameManager>
     }
     #endregion
 
-
     #region Monster
     public IEnumerator RootSpawnMonster()
     {
@@ -110,7 +108,7 @@ public class GameManager : Singletone<GameManager>
             yield return Data.MonsterSpawnTime;
         }
     }
-    public void SpawnMolnster()
+    void SpawnMolnster()
     {
         int MonsterIndex = UnityEngine.Random.Range(0, _resourceManager.PrefabMonster.Length);
         int LayerIndex = UnityEngine.Random.Range(0, Data.LayerName.Length);
@@ -132,11 +130,7 @@ public class GameManager : Singletone<GameManager>
     }
     #endregion
 
-
-
-
-
-
+    #region Return_HitObj
     public HitObject GetCloseBox(Transform monster)
     {
         return truck.ReturnCurrentHitPoj(monster);
@@ -161,10 +155,8 @@ public class GameManager : Singletone<GameManager>
 
     }
 
-    public void Testcode()
-    {
-        
-    }
+    #endregion
+    
 
 
 

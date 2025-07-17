@@ -12,7 +12,6 @@ public class Bullet : Poolable
     Coroutine rootMove;
     public void SetUp(Vector3 dir,float dmg)
     {
-
         if(_resourceManager == null)
             _resourceManager = ResourceManager.Instance;
 
@@ -50,7 +49,7 @@ public class Bullet : Poolable
         }
     }
 
-    public void Remove()
+    void Remove()
     {
         if (rootMove != null)
             StopCoroutine(rootMove);
